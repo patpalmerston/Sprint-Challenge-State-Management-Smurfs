@@ -13,7 +13,7 @@ const SmurfList = () => {
 
 	return (
 		<Fragment>
-			{smurfs && smurfs.map(smurf => <SmurfItem smurf={smurf} />)}
+			{smurfs && smurfs.map(smurf => <SmurfItem smurf={smurf} key={smurf.id} />)}
 		</Fragment>
 	);
 };

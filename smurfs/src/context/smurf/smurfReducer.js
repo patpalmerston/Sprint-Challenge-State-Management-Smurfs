@@ -1,15 +1,14 @@
 import {
 	GET_SMURFS,
 	ADD_SMURF,
-	DELETE_SMURFS,
-	UPDATE_SMURFS,
+	DELETE_SMURF,
+	UPDATE_SMURF,
 	SMURF_ERROR
 } from '../types';
 
 export default (state, action) => {
-  console.log(action)
+	console.log(action);
 	switch (action.type) {
-    
 		case GET_SMURFS:
 			return {
 				...state,
@@ -20,6 +19,12 @@ export default (state, action) => {
 			return {
 				...state,
 				smurfs: [action.payload, ...state.smurfs],
+				loading: false
+			};
+		case DELETE_SMURF:
+			return {
+				...state,
+				smurfs: state.smurfs.filter(smurf => smurf.id !== action.payload),
 				loading: false
 			};
 		case SMURF_ERROR:

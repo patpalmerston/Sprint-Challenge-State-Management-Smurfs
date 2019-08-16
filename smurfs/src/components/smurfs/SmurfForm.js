@@ -8,24 +8,32 @@ const SmurfForm = () => {
 	const { addSmurf } = smurfContext;
 
 
-	// useEffect(() => {
-	// 	setSmurf({
-	// 		name: '',
-	// 		age: '',
-	// 		height: ''
-	// 	});
-	// }, [smurfContext]);
+	useEffect(() => {
+		addSmurf()
+		setSmurf({
+			name: '',
+			age: '',
+			height: ''
+			
+		});
+	}, []);
+
+
 
 	// create local state for the form
 	const [smurf, setSmurf] = useState({
 		name: '',
 		age: '',
 		height: '',
+		
 	
 	});
 
-	// const { name, age, height } = smurf;
+	// const { id, name, age, height } = smurf;
+
 	console.log('smurf form',smurf)
+
+	
 
 	const handleChanges = e => {
 		setSmurf({ ...smurf, [e.target.name]: e.target.value });
@@ -43,7 +51,7 @@ const SmurfForm = () => {
 	};
 
 	return (
-		<form onSubmit={onSubmit}>
+		<form>
 			{console.log('onSubmit', onSubmit)}
 			<input
 				type='text'
