@@ -6,7 +6,7 @@ import smurfReducer from './smurfReducer';
 
 import {
 	GET_SMURFS,
-	ADD_SMURFS,
+	ADD_SMURF,
 	DELETE_SMURFS,
 	UPDATE_SMURFS,
 	SMURF_ERROR
@@ -37,6 +37,21 @@ const SmurfState = props => {
 	};
 
 	// Add Smurfs
+	const addSmurf = async smurf => {
+		try {
+      const res = await axios.post('http://localhost:3333/smurfs', smurf);
+      
+			dispatch({
+				type: ADD_SMURF,
+				payload: res.data
+			});
+		} catch (err) {
+			dispatch({
+				type: SMURF_ERROR,
+				payload: err.response.msg
+			});
+		}
+	};
 
 	//Delete Smurfs
 
@@ -47,7 +62,8 @@ const SmurfState = props => {
 			value={{
 				smurfs: state.smurfs,
 				error: state.error,
-				getSmurfs
+				getSmurfs,
+				addSmurf
 			}}
 		>
 			{props.children}
