@@ -68,6 +68,11 @@ export default (state, action) => {
 					return smurf.name.match(regex);
 				})
 			};
+		case CLEAR_FILTER:
+			return {
+				...state,
+				filtered: null
+			};
 		case SMURF_ERROR:
 			return {
 				...state,

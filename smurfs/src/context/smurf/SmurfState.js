@@ -85,6 +85,7 @@ const SmurfState = props => {
 				`http://localhost:3333/smurfs/${smurf.id}`,
 				smurf
 			);
+			getSmurfs();
 
 			dispatch({
 				type: UPDATE_SMURF,
@@ -126,9 +127,9 @@ const SmurfState = props => {
 	return (
 		<SmurfContext.Provider
 			value={{
-        smurfs: state.smurfs,
-        current: state.current,
-        filtered: state.filtered,
+				smurfs: state.smurfs,
+				current: state.current,
+				filtered: state.filtered,
 				error: state.error,
 				getSmurfs,
 				addSmurf,
