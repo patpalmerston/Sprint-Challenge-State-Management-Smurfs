@@ -8,13 +8,20 @@ import {
 	GET_SMURFS,
 	ADD_SMURF,
 	DELETE_SMURF,
+	SET_CURRENT,
+	CLEAR_CURRENT,
 	UPDATE_SMURF,
-	SMURF_ERROR
+	FILTER_SMURFS,
+	CLEAR_SMURFS,
+	SMURF_ERROR,
+	CLEAR_FILTER
 } from '../types';
 
 const SmurfState = props => {
 	const initialState = {
 		smurfs: null,
+		current: null,
+		filtered: null,
 		error: null
 	};
 
@@ -53,34 +60,85 @@ const SmurfState = props => {
 		}
 	};
 
-  //Delete Smurfs
-  
-  const deleteSmurf = async id => {
-    try {
-      await axios.delete(`http://localhost:3333/smurfs/${id}`);
+	//Delete Smurfs
 
-      dispatch({
-        type: DELETE_SMURF,
-        payload: id
-      })
-    } catch (err) {
-      dispatch({
-        type: SMURF_ERROR,
-        payload: err.response.msg
-      })
-    }
-  }
+	const deleteSmurf = async id => {
+		try {
+			await axios.delete(`http://localhost:3333/smurfs/${id}`);
+
+			dispatch({
+				type: DELETE_SMURF,
+				payload: id
+			});
+		} catch (err) {
+			dispatch({
+				type: SMURF_ERROR,
+				payload: err.response.msg
+			});
+		}
+	};
 
 	//Edit Smurfs
+	const updateSmurf = async smurf => {
+		try {
+			const res = await axios.put(
+				`http://localhost:3333/smurfs/${smurf.id}`,
+				smurf
+			);
+
+			dispatch({
+				type: UPDATE_SMURF,
+				payload: res.data
+			});
+		} catch (err) {
+			dispatch({
+				tpe: SMURF_ERROR,
+				payload: err.response.msg
+			});
+		}
+	};
+
+	// Clear Smurfs
+	const clearSmurfs = () => {
+		dispatch({ type: CLEAR_SMURFS });
+	};
+
+	// Set Current Smurf
+	const setCurrent = smurf => {
+		dispatch({ type: SET_CURRENT, payload: smurf });
+	};
+
+	// Clear Current Smurf
+	const clearCurrent = () => {
+		dispatch({ type: CLEAR_CURRENT });
+	};
+
+	// Filter Smurfs
+	const filterSmurfs = text => {
+		dispatch({ type: FILTER_SMURFS, payload: text });
+	};
+
+	// Clear Filter
+	const clearFilter = () => {
+		dispatch({ type: CLEAR_FILTER });
+	};
 
 	return (
 		<SmurfContext.Provider
 			value={{
-				smurfs: state.smurfs,
+        smurfs: state.smurfs,
+        current: state.current,
+        filtered: state.filtered,
 				error: state.error,
 				getSmurfs,
-        addSmurf,
-        deleteSmurf
+				addSmurf,
+				deleteSmurf,
+				updateSmurf,
+				clearSmurfs,
+				setCurrent,
+				clearCurrent,
+				filterSmurfs,
+				clearFilter
 			}}
 		>
 			{props.children}

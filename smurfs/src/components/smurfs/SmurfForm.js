@@ -5,35 +5,30 @@ const SmurfForm = () => {
 	// access to any methods or stat with this variable
 	const smurfContext = useContext(SmurfContext);
 	// get addSmurf from destructuring
-	const { addSmurf } = smurfContext;
-
+	const { addSmurf, clearCurrent, updateSmurf, current } = smurfContext;
 
 	useEffect(() => {
-		addSmurf()
-		setSmurf({
-			name: '',
-			age: '',
-			height: ''
-			
-		});
-	}, []);
-
-
+		if (current !== null) {
+			setSmurf(current);
+		} else {
+			setSmurf({
+				name: '',
+				age: '',
+				height: ''
+			});
+		}
+	}, [smurfContext, current]);
 
 	// create local state for the form
 	const [smurf, setSmurf] = useState({
 		name: '',
 		age: '',
-		height: '',
-		
-	
+		height: ''
 	});
 
-	// const { id, name, age, height } = smurf;
+	const { name, age, height } = smurf;
 
-	console.log('smurf form',smurf)
-
-	
+	console.log('smurf form', smurf);
 
 	const handleChanges = e => {
 		setSmurf({ ...smurf, [e.target.name]: e.target.value });
@@ -41,40 +36,61 @@ const SmurfForm = () => {
 
 	const onSubmit = e => {
 		e.preventDefault();
-		addSmurf(smurf);
+		if (current === null) {
+			addSmurf(smurf);
+		} else {
+			updateSmurf(smurf);
+		}
 		setSmurf({
 			name: '',
 			age: '',
 			height: ''
-		})
+		});
 		console.log(smurf);
 	};
 
+	const clearAll = () => {
+		clearCurrent();
+	};
+
 	return (
-		<form>
+		<form onSubmit={onSubmit}>
 			{console.log('onSubmit', onSubmit)}
+			<h2 className='text-primary'>{current ? 'Edit Smurf' : 'Add Smurf'}</h2>
 			<input
 				type='text'
 				placeholder='name'
 				name='name'
-				// value={name}
+				value={name}
 				onChange={handleChanges}
 			/>
 			<input
 				type='text'
 				placeholder='age'
 				name='age'
-				// value={age}
+				value={age}
 				onChange={handleChanges}
 			/>
 			<input
 				type='text'
 				placeholder='height'
 				name='height'
-				// value={height}
+				value={height}
 				onChange={handleChanges}
 			/>
-			<button onClick={onSubmit}>Add Smurf</button>
+			<div>
+				<input 
+					type='submit' 
+					value={current ? 'Edit Smurf' : 'Add Smurf'} 
+					className='btn btn-primary btn-block'
+				/>
+			</div>
+
+			{current && (
+				<div>
+					<button className= 'btn btn-light btn-block' onClick={clearAll}>clear</button>
+				</div>
+			)}
 		</form>
 	);
 };
